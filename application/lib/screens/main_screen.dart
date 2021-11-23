@@ -1,4 +1,5 @@
 import 'package:bidulgi/controllers/schoolinfo_controller.dart';
+import 'package:bidulgi/themes/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,9 +30,15 @@ class MainScreen extends GetWidget<SchoolInfoController> {
               } else {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "현재온도 : ${data}",
+                      "현재 온도:",
+                      style: homeHumiAndTempTitle,
+                    ),
+                    Text(
+                      "${data}℃",
+                      style: homeHumiAndTempNum,
                     )
                   ],
                 );
@@ -44,9 +51,15 @@ class MainScreen extends GetWidget<SchoolInfoController> {
               } else {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "현재습도 : ${data}",
+                      "현재 습도:",
+                      style: homeHumiAndTempTitle,
+                    ),
+                    Text(
+                      "${data}%",
+                      style: homeHumiAndTempNum,
                     )
                   ],
                 );
@@ -57,7 +70,7 @@ class MainScreen extends GetWidget<SchoolInfoController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "남은 시간 : ${controller.refreshTime.value}",
+                    "새로고침까지 남은 시간 : ${controller.refreshTime.value}초",
                   )
                 ],
               );

@@ -17,8 +17,8 @@ class SchoolInfoController extends GetxController {
             Duration(seconds: 1),
             () async {
               if (refreshTime.value == 0) {
-                temperature.value = getSchoolTemperature();
-                humidity.value = getSchoolHumidity();
+                temperature.value = await getSchoolTemperature();
+                humidity.value = await getSchoolHumidity();
                 
                 refreshTime.value = 10;
               } else {
@@ -32,7 +32,7 @@ class SchoolInfoController extends GetxController {
     }
   }
   
-  getSchoolTemperature() => _realtimeDatabase.getSchoolTemperature();
-  getSchoolHumidity() => _realtimeDatabase.getSchoolHumidity();
+  getSchoolTemperature() async => await _realtimeDatabase.getSchoolTemperature();
+  getSchoolHumidity() async => await _realtimeDatabase.getSchoolHumidity();
 
 }
