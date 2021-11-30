@@ -1,3 +1,4 @@
+import 'package:bidulgi/services/firebase_storage.dart';
 import 'package:bidulgi/services/realtime_database.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +10,7 @@ class SchoolInfoController extends GetxController {
 
   RxString temperature = "initData".obs;
   RxString humidity = "initData".obs;
+  RxString cctvCapture = "initData".obs;
 
   Future<void> refreshTimer() async {
     try {
@@ -19,6 +21,7 @@ class SchoolInfoController extends GetxController {
               if (refreshTime.value == 0) {
                 temperature.value = await getSchoolTemperature();
                 humidity.value = await getSchoolHumidity();
+                cctvCapture.value = await getCctvCaptureImageUrl();
                 
                 refreshTime.value = 10;
               } else {
@@ -34,5 +37,11 @@ class SchoolInfoController extends GetxController {
   
   getSchoolTemperature() async => await _realtimeDatabase.getSchoolTemperature();
   getSchoolHumidity() async => await _realtimeDatabase.getSchoolHumidity();
+
+  getCctvCaptureImageUrl() async {
+    String lastUpdate = await _realtimeDatabase.getCctvLastUpdateDate();
+
+    return await FirebaseStorage().getImageUrl(lastUpdate);
+  }
 
 }

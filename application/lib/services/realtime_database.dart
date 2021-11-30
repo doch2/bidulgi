@@ -14,4 +14,10 @@ class RealtimeDatabase {
 
     return (await reference.get()).value.toString();
   }
+
+  getCctvLastUpdateDate() async {
+    DatabaseReference reference = databaseInstance.reference().child("cctvLastUpdate");
+
+    return (await reference.get()).value.toString();
+  }
 }
