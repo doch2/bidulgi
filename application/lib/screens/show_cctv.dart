@@ -26,9 +26,12 @@ class ShowCctv extends GetWidget<SchoolInfoController> {
             ),
             Positioned(
               bottom: -(_height * 0.1),
-              child: Image.asset(
-                "assets/images/background_cloud.png",
-                width: _width,
+              child: Hero(
+                tag: "bottomDesign",
+                child: Image.asset(
+                  "assets/images/background_cloud.png",
+                  width: _width,
+                ),
               ),
             ),
             Column(

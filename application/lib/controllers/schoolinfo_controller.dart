@@ -1,5 +1,6 @@
 import 'package:bidulgi/services/firebase_storage.dart';
 import 'package:bidulgi/services/realtime_database.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 
 class SchoolInfoController extends GetxController {
@@ -9,8 +10,14 @@ class SchoolInfoController extends GetxController {
   RxInt refreshTime = 0.obs;
 
   RxString temperature = "initData".obs;
-  RxString humidity = "initData".obs;
+  RxBool isLedOnOff = false.obs;
+  RxBool isSoundOnOff = false.obs;
   RxString cctvCapture = "initData".obs;
+
+  @override
+  onInit() async {
+    _realtimeDatabase.registerCctvChangeListener();
+  }
 
   Future<void> refreshTimer() async {
     try {
@@ -20,7 +27,6 @@ class SchoolInfoController extends GetxController {
             () async {
               if (refreshTime.value == 0) {
                 temperature.value = await getSchoolTemperature();
-                humidity.value = await getSchoolHumidity();
                 cctvCapture.value = await getCctvCaptureImageUrl();
                 
                 refreshTime.value = 10;
@@ -36,7 +42,31 @@ class SchoolInfoController extends GetxController {
   }
   
   getSchoolTemperature() async => await _realtimeDatabase.getSchoolTemperature();
-  getSchoolHumidity() async => await _realtimeDatabase.getSchoolHumidity();
+
+  getLedOnOff() async => await _realtimeDatabase.getLedOnOff();
+  setLedOnOff(bool ledStatus) async {
+    isLedOnOff.value = ledStatus;
+
+    await _realtimeDatabase.setLedOnOff(ledStatus);
+  }
+
+  getSoundOnOff() async => await _realtimeDatabase.getSoundOnOff();
+  setSoundOnOff(bool soundStatus) async {
+    if (!isSoundOnOff.value) {
+      isSoundOnOff.value = soundStatus;
+
+      if (soundStatus) { Vibrate.vibrate(); }
+      await _realtimeDatabase.setSoundOnOff(soundStatus);
+
+      Future.delayed(
+          Duration(seconds: 5),
+              () async                {
+            isSoundOnOff.value = !soundStatus;
+            await _realtimeDatabase.setSoundOnOff(!soundStatus);
+          }
+      );
+    }
+  }
 
   getCctvCaptureImageUrl() async {
     String lastUpdate = await _realtimeDatabase.getCctvLastUpdateDate();

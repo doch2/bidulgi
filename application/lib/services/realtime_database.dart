@@ -9,10 +9,44 @@ class RealtimeDatabase {
     return (await reference.get()).value.toString();
   }
 
-  getSchoolHumidity() async {
-    DatabaseReference reference = databaseInstance.reference().child("humidity");
+  getLedOnOff() async {
+    DatabaseReference reference = databaseInstance.reference().child("led");
 
-    return (await reference.get()).value.toString();
+    return (await reference.get()).value;
+  }
+
+  setLedOnOff(bool ledStatus) async {
+    DatabaseReference reference = databaseInstance.reference();
+
+    reference.update(
+      {
+        "led": ledStatus,
+      }
+    );
+  }
+
+  getSoundOnOff() async {
+    DatabaseReference reference = databaseInstance.reference().child("sound");
+
+    return (await reference.get()).value;
+  }
+
+  setSoundOnOff(bool soundStatus) async {
+    DatabaseReference reference = databaseInstance.reference();
+
+    reference.update(
+        {
+          "sound": soundStatus,
+        }
+    );
+  }
+
+  registerCctvChangeListener() async {
+    databaseInstance.reference().child("led").onChildChanged.listen(
+            (event) {
+              print(event.snapshot.value);
+            }
+    );
   }
 
   getCctvLastUpdateDate() async {
