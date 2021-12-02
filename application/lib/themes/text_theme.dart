@@ -1,13 +1,15 @@
 import 'package:bidulgi/themes/color_theme.dart';
 import 'package:flutter/material.dart';
 
-final homeHumiAndTempTitle = TextStyle(
+final homeDescription = TextStyle(
     fontSize: 18, color: grayOne, fontFamily: 'NotoSansKR', fontWeight: FontWeight.w500);
-final homeHumiAndTempNum = TextStyle(
+final homeTitle = TextStyle(
     fontSize: 26, color: Colors.black, fontFamily: 'NotoSansKR', fontWeight: FontWeight.w700);
 
-final homeRefreshTime = TextStyle(
-    fontSize: 16, color: Colors.black, fontFamily: 'NotoSansKR', fontWeight: FontWeight.w400);
+final homeMessageInput = TextStyle(
+    fontSize: 15, color: Colors.black, fontFamily: 'NotoSansKR', fontWeight: FontWeight.w400);
+final homeDefaultBtn = TextStyle(
+    fontSize: 15.5, fontFamily: 'NotoSansKR', fontWeight: FontWeight.w700);
 
 final homeWaitingStatusTitle = TextStyle(
     fontSize: 18, color: Colors.black, fontFamily: 'NotoSansKR', fontWeight: FontWeight.w500);

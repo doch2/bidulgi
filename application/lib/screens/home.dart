@@ -1,11 +1,11 @@
-import 'package:bidulgi/controllers/schoolinfo_controller.dart';
+import 'package:bidulgi/controllers/cctv_controller.dart';
 import 'package:bidulgi/themes/color_theme.dart';
 import 'package:bidulgi/themes/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 
-class Home extends GetWidget<SchoolInfoController> {
+class Home extends GetWidget<CCTVController> {
   Home({Key? key}) : super(key: key);
 
   @override
@@ -13,7 +13,9 @@ class Home extends GetWidget<SchoolInfoController> {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
 
-    if (!controller.isCreateRefreshTimer) { controller.refreshTimer(); controller.isCreateRefreshTimer = true; }
+    final messageTextController = TextEditingController();
+
+    if (!controller.isCreateRefreshTimer) { controller.refreshTimerNowTime(); controller.refreshTimerCctv(); controller.isCreateRefreshTimer = true; }
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -37,10 +39,10 @@ class Home extends GetWidget<SchoolInfoController> {
               ),
             ),
             Positioned(
-              top: _height * 0.2,
-              left: _width * 0.15,
+              top: _height * 0.11,
+              left: _width * 0.13,
               child: Obx(() {
-                String data = controller.temperature.value;
+                String data = controller.nowTime.value;
                 if (data == "initData") {
                   return CircularProgressIndicator();
                 } else {
@@ -49,12 +51,12 @@ class Home extends GetWidget<SchoolInfoController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "현재 온도",
-                        style: homeHumiAndTempTitle,
+                        "현재 시각",
+                        style: homeDescription,
                       ),
                       Text(
-                        "${data}℃",
-                        style: homeHumiAndTempNum,
+                        "${data}",
+                        style: homeTitle,
                       )
                     ],
                   );
@@ -62,13 +64,13 @@ class Home extends GetWidget<SchoolInfoController> {
               }),
             ),
             Positioned(
-              top: _height * 0.325,
-              left: _width * 0.15,
+              top: _height * 0.285,
+              left: _width * 0.13,
               child: Row(
                 children: [
                   Text(
                     "LED ON/OFF",
-                    style: homeHumiAndTempNum,
+                    style: homeTitle,
                   ),
                   SizedBox(width: _width * 0.025),
                   FutureBuilder(
@@ -102,7 +104,55 @@ class Home extends GetWidget<SchoolInfoController> {
               ),
             ),
             Positioned(
-              top: _height * 0.6,
+              top: _height * 0.4,
+              left: _width * 0.13,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: _width * 0.45,
+                    child: TextField(
+                        controller: messageTextController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'LCD창에 보여줄 메세지',
+                        ),
+                        style: homeMessageInput
+                    ),
+                  ),
+                  SizedBox(width: _width * 0.04),
+                  GestureDetector(
+                    onTap: () => controller.sendMessage(messageTextController.text),
+                    child: Container(
+                      height: _height * 0.07,
+                      width: _width * 0.275,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFF2c2c2c).withOpacity(0.1),
+                              spreadRadius: 4,
+                              blurRadius: 10,
+                            )
+                          ]
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                              "메세지 보내기",
+                              style: homeDefaultBtn
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Positioned(
+              top: _height * 0.625,
               child: FutureBuilder(
                   future: controller.getSoundOnOff(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -126,16 +176,57 @@ class Home extends GetWidget<SchoolInfoController> {
               ),
             ),
             Positioned(
-              bottom: _height * 0.0125,
-              child: Obx(() {
-                return Text(
-                  "새로고침까지 남은 시간 : ${controller.refreshTime.value}초",
-                  style: homeRefreshTime,
-                );
-              }),
+              top: _height * 0.65,
+              left: _width * 0.8,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => controller.setSoundTime(5),
+                    child: setSoundTimeBtn(5, _width, _height),
+                  ),
+                  SizedBox(height: _height * 0.02),
+                  GestureDetector(
+                    onTap: () => controller.setSoundTime(10),
+                    child: setSoundTimeBtn(10, _width, _height),
+                  ),
+                  SizedBox(height: _height * 0.02),
+                  GestureDetector(
+                    onTap: () => controller.setSoundTime(15),
+                    child: setSoundTimeBtn(15, _width, _height),
+                  )
+                ],
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Container setSoundTimeBtn(int time, double _width, double _height) {
+    return Container(
+      height: _height * 0.0725,
+      width: _height * 0.0725,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF2c2c2c).withOpacity(0.1),
+              spreadRadius: 4,
+              blurRadius: 10,
+            )
+          ]
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+              "$time초",
+              style: homeDefaultBtn
+          )
+        ],
       ),
     );
   }

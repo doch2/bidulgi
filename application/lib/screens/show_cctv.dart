@@ -1,11 +1,11 @@
-import 'package:bidulgi/controllers/schoolinfo_controller.dart';
+import 'package:bidulgi/controllers/cctv_controller.dart';
 import 'package:bidulgi/themes/color_theme.dart';
 import 'package:bidulgi/themes/text_theme.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ShowCctv extends GetWidget<SchoolInfoController> {
+class ShowCctv extends GetWidget<CCTVController> {
   ShowCctv({Key? key}) : super(key: key);
 
   @override
@@ -52,15 +52,6 @@ class ShowCctv extends GetWidget<SchoolInfoController> {
                   }
                 }),
               ],
-            ),
-            Positioned(
-              bottom: _height * 0.04,
-              child: Obx(() {
-                return Text(
-                  "새로고침까지 남은 시간 : ${controller.refreshTime.value}초",
-                  style: homeRefreshTime,
-                );
-              }),
             ),
           ],
         ),

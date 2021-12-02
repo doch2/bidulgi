@@ -3,12 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 class RealtimeDatabase {
   FirebaseDatabase databaseInstance = FirebaseDatabase.instance;
 
-  getSchoolTemperature() async {
-    DatabaseReference reference = databaseInstance.reference().child("temperature");
-
-    return (await reference.get()).value.toString();
-  }
-
   getLedOnOff() async {
     DatabaseReference reference = databaseInstance.reference().child("led");
 
@@ -37,6 +31,32 @@ class RealtimeDatabase {
     reference.update(
         {
           "sound": soundStatus,
+        }
+    );
+  }
+
+  getSoundTime() async {
+    DatabaseReference reference = databaseInstance.reference().child("soundTime");
+
+    return (await reference.get()).value;
+  }
+
+  setSoundTime(int time) async {
+    DatabaseReference reference = databaseInstance.reference();
+
+    reference.update(
+        {
+          "soundTime": time,
+        }
+    );
+  }
+
+  sendMessage(String content) async {
+    DatabaseReference reference = databaseInstance.reference();
+
+    reference.update(
+        {
+          "lcdMessage": content,
         }
     );
   }
