@@ -3,6 +3,7 @@ import 'package:bidulgi/themes/color_theme.dart';
 import 'package:bidulgi/themes/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 
 class Home extends GetWidget<CCTVController> {
@@ -61,6 +62,40 @@ class Home extends GetWidget<CCTVController> {
                     ],
                   );
                 }
+              }),
+            ),
+            Positioned(
+              top: _height * 0.1,
+              right: _width * 0.1,
+              child: Obx(() {
+                TextStyle textStyle = trafficLightOff;
+                Color containerColor = grayThree;
+                Color containerShadowColor = grayShadowOne;
+
+                if (controller.hasThief.value) {
+                  textStyle = trafficLightOn;
+                  containerColor = redOne;
+                  containerShadowColor = redShadowOne;
+
+                  Vibrate.vibrate();
+                }
+
+                return Container(
+                  height: _width * 0.225,
+                  width: _width * 0.225,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: containerColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: containerShadowColor,
+                        offset: Offset(4, 4),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: Center(child: Text("침입!", style: textStyle)),
+                );
               }),
             ),
             Positioned(

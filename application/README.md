@@ -1,16 +1,10 @@
-# bidulgi
+# 비둘기 - Flutter Application
 
-A new Flutter project.
+비둘기 어플리케이션입니다.
 
-## Getting Started
+## 개발을 위해선
 
-This project is a starting point for a Flutter application.
+본 어플리케이션은 플러터로 만들어졌으며, 본 레포지토리를 Clone 받아 개발을 진행하고자 하는 경우 기본 Flutter 개발 환경 구성을 진행하셔야 합니다.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+또한 현재 본 레포지토리에는 Firebase 사용을 위한 google-services.json가 보안상 문제로 업로드가 되어있지 않은 상태입니다.
+만약 개발을 진행하고자 하신다면, google-service.json를 개발자에게 받으신 후 개발을 진행해주시기 바랍니다.

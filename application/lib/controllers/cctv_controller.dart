@@ -11,10 +11,11 @@ class CCTVController extends GetxController {
   bool isCreateRefreshTimer = false;
   RxInt refreshTime = 1.obs;
 
-  RxString temperature = "initData".obs;
   RxString nowTime = "initData".obs;
   RxBool isLedOnOff = false.obs;
   RxBool isSoundOnOff = false.obs;
+  RxInt soundTime = 5.obs;
+  RxBool hasThief = false.obs;
   RxString cctvCapture = "initData".obs;
 
   @override
@@ -30,7 +31,6 @@ class CCTVController extends GetxController {
             () async {
               if (refreshTime.value == 1) {
                 nowTime.value = "${DateTime.now().hour}시 ${DateTime.now().minute}분 ${DateTime.now().second}초";
-                //cctvCapture.value = await getCctvCaptureImageUrl();
                 
                 refreshTime.value = 1;
               } else {
@@ -52,6 +52,8 @@ class CCTVController extends GetxController {
                 () async {
               if (refreshTime.value == 1) {
                 cctvCapture.value = await getCctvCaptureImageUrl();
+                soundTime.value = await getSoundTime();
+                hasThief.value = await getHasThief();
 
                 refreshTime.value = 1;
               } else {
@@ -70,6 +72,12 @@ class CCTVController extends GetxController {
     isLedOnOff.value = ledStatus;
 
     await _realtimeDatabase.setLedOnOff(ledStatus);
+
+    if (ledStatus) {
+      showToast("LED가 켜졌습니다.");
+    } else {
+      showToast("LED가 꺼졌습니다.");
+    }
   }
 
   getSoundTime() async => await _realtimeDatabase.getSoundTime();
@@ -85,6 +93,14 @@ class CCTVController extends GetxController {
 
       showToast("경고음이 재생됩니다.");
 
+      Future.delayed(
+          Duration(seconds: soundTime.value),
+              () async {
+            isSoundOnOff.value = !soundStatus;
+            await _realtimeDatabase.setSoundOnOff(!soundStatus);
+          }
+      );
+
       if (soundStatus) {
         Vibrate.vibrate();
         await Future.delayed(
@@ -97,16 +113,10 @@ class CCTVController extends GetxController {
         );
       }
       await _realtimeDatabase.setSoundOnOff(soundStatus);
-
-      Future.delayed(
-          Duration(seconds: 5),
-              () async {
-            isSoundOnOff.value = !soundStatus;
-            await _realtimeDatabase.setSoundOnOff(!soundStatus);
-          }
-      );
     }
   }
+
+  getHasThief() async => await _realtimeDatabase.getHasThief();
 
   sendMessage(String content) async {
     await _realtimeDatabase.sendMessage(content);

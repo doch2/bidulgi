@@ -51,6 +51,12 @@ class RealtimeDatabase {
     );
   }
 
+  getHasThief() async {
+    DatabaseReference reference = databaseInstance.reference().child("hasThief");
+
+    return (await reference.get()).value;
+  }
+
   sendMessage(String content) async {
     DatabaseReference reference = databaseInstance.reference();
 

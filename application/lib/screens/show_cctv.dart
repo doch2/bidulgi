@@ -38,9 +38,11 @@ class ShowCctv extends GetWidget<CCTVController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                    "CCTV 확인하기"
+                  "CCTV는 라즈베리파이의 모니터에서 \n확인하실 수 있습니다 :)\n\n정식 프로젝트가 진행되면 네트워크 설정(포트포워딩 등)을 \n진행하여 앱에서도 확인할 수 있게 할 예정이에요!",
+                  textAlign: TextAlign.center,
+                  style: cameraDescription,
                 ),
-                Obx(() {
+                /*Obx(() {
                   String data = controller.cctvCapture.value;
                   if (data == "initData") {
                     return CircularProgressIndicator();
@@ -50,7 +52,7 @@ class ShowCctv extends GetWidget<CCTVController> {
                       child: ExtendedImage.network(controller.cctvCapture.value),
                     );
                   }
-                }),
+                }), */
               ],
             ),
           ],
