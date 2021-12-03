@@ -17,6 +17,7 @@ class Home extends GetWidget<CCTVController> {
     final messageTextController = TextEditingController();
 
     if (!controller.isCreateRefreshTimer) { controller.refreshTimerNowTime(); controller.refreshTimerCctv(); controller.isCreateRefreshTimer = true; }
+    bool firstRenderWindow = true;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -65,8 +66,8 @@ class Home extends GetWidget<CCTVController> {
               }),
             ),
             Positioned(
-              top: _height * 0.1,
-              right: _width * 0.1,
+              top: _height * 0.08,
+              right: _width * 0.09,
               child: Obx(() {
                 TextStyle textStyle = trafficLightOff;
                 Color containerColor = grayThree;
@@ -77,7 +78,8 @@ class Home extends GetWidget<CCTVController> {
                   containerColor = redOne;
                   containerShadowColor = redShadowOne;
 
-                  Vibrate.vibrate();
+                  if (!firstRenderWindow) { Vibrate.vibrate(); }
+                  firstRenderWindow = false;
                 }
 
                 return Container(
